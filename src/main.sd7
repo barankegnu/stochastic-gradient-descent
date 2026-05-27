@@ -1,0 +1,29 @@
+$ include "seed7_05.s7i";
+  include "nstdlibs.s7i";
+
+const proc: main is func
+  local
+    var integer:     coeffCount is integer.value;
+    var pointArray2: pointArray is pointArray2.value;
+    var array float: coeffArray is integer.value times float.value;
+  begin
+    parseArgvs(argv(PROGRAM));
+    readDataFromFile(
+                     argv(PROGRAM)[1],
+                     coeffCount,
+                     pointArray
+    );
+    sortPointX(pointArray);
+    parsePoint(pointArray);
+    removeDuplicates(pointArray);
+    calcAdaMax(
+               coeffCount,
+               pointArray,
+               coeffArray
+    );
+    writeCoeffToFile(
+                     argv(PROGRAM)[2],
+                     coeffCount,
+                     coeffArray
+    );
+  end func;

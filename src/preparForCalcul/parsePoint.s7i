@@ -1,0 +1,12 @@
+const proc: parsePoint (ref pointArray2: pointArray) is func
+  local
+    var integer: i is integer.value;
+  begin
+    for i range 1 to length(pointArray) - 1 do
+      if pointArray[i].X =  pointArray[i+1].X and
+         pointArray[i].Y <> pointArray[i+1].Y then
+        write("\t\nPARSE_POINT->POINT_ARRAY->EQUIVALENT\n\n");
+        exit(PROGRAM);
+      end if;
+    end for;
+  end func;

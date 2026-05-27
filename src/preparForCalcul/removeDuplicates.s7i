@@ -1,0 +1,23 @@
+const proc: removeDuplicates (inout pointArray2: pointArray) is func
+  local
+    var integer: i is integer.value;
+    var integer: j is integer.value;
+  begin
+    i := 1;
+    j := length(pointArray);
+    while i < j do
+      if pointArray[i].X = pointArray[i+1].X and
+         pointArray[i].Y = pointArray[i+1].Y then
+        block
+          ignore(remove(pointArray, i));
+        exception
+          catch INDEX_ERROR:
+            write("\t\nREMOVE_DUPLICATES->REMOVE->INDEX_ERROR\n\n");
+            exit(PROGRAM);
+        end block;
+        j -:= 1;
+      else
+        i +:= 1;
+      end if;
+    end while;
+  end func;

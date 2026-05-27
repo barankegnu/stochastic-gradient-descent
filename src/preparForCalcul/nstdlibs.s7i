@@ -1,0 +1,6 @@
+include "pointArray2.s7i";
+include "parseArgvs.s7i";
+include "readDataFromFile.s7i";
+include "sortPointX.s7i";
+include "parsePoint.s7i";
+include "removeDuplicates.s7i";

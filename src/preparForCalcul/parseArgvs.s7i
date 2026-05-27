@@ -1,0 +1,34 @@
+include "osfiles.s7i";
+
+const proc: parseArgvs (ref array string: arg) is func
+  local
+    const integer: argc is 2;
+    var   integer: i    is integer.value;
+  begin
+    if length(arg) <> argc then
+      write("\n\tPARSE_ARGVS->LENGTH->ARGC\n\n");
+      exit(PROGRAM);
+    end if;
+    for i range 1 to argc do
+      block
+        if fileType(arg[i]) = FILE_ABSENT then
+          write("\n\tPARSE_ARGVS->FILE_TYPE->FILE_ABSENT\n\n");
+          exit(PROGRAM);
+        end if;
+        if fileType(arg[i]) <> FILE_REGULAR then
+          write("\n\tPARSE_ARGVS->FILE_TYPE->FILE_REGULAR\n\n");
+          exit(PROGRAM);
+        end if;
+      exception
+        catch MEMORY_ERROR:
+          write("\n\tPARSE_ARGVS->FILE_TYPE->MEMORY_ERROR\n\n");
+          exit(PROGRAM);
+        catch RANGE_ERROR:
+          write("\n\tPARSE_ARGVS->FILE_TYPE->RANGE_ERROR\n\n");
+          exit(PROGRAM);
+        catch FILE_ERROR:
+          write("\n\tPARSE_ARGVS->FILE_TYPE->FILE_ERROR\n\n");
+          exit(PROGRAM);
+      end block;
+    end for;
+  end func;

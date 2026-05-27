@@ -1,0 +1,7 @@
+bin/profile_out
+src/profile_out
+src/tmp_main.o
+src/main
+src/config.txt
+src/result.txt
+*~

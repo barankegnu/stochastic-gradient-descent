@@ -1,0 +1,43 @@
+const proc: writeCoeffToFile (
+                              ref string:      resultPath,
+                              ref integer:     coeffCount,
+                              ref array float: coeffArray
+  ) is func
+  local
+    var file:    resultFile is file.value;
+    var integer: i          is integer.value;
+  begin
+    block
+      resultFile := open(resultPath, "w");
+    exception
+      catch MEMORY_ERROR:
+        write("\n\tWRITE_COEFF_TO_FILE->OPEN->MEMORY_ERROR\n\n");
+        exit(PROGRAM);
+      catch RANGE_ERROR:
+        write("\n\tWRITE_COEFF_TO_FILE->OPEN->RANGE_ERROR\n\n");
+        exit(PROGRAM);
+    end block;
+    if resultFile = STD_NULL then
+      write("\n\tWRITE_COEFF_TO_FILE->RESULT_FILE->STD_NULL\n\n");
+      exit(PROGRAM);
+    end if;
+    for i range 1 to coeffCount do
+      block
+        writeln(resultFile, coeffArray[i]);
+      exception
+        catch FILE_ERROR:
+          write("\n\tWRITE_COEFF_TO_FILE->WRITELN->FILE_ERROR\n\n");
+          exit(PROGRAM);
+        catch RANGE_ERROR:
+          write("\n\tWRITE_COEFF_TO_FILE->WRITELN->RANGE_ERROR\n\n");
+          exit(PROGRAM);
+      end block;
+    end for;
+    block
+      close(resultFile);
+    exception
+      catch FILE_ERROR:
+        write("\n\tWRITE_COEFF_TO_FILE->CLOSE->FILE_ERROR\n\n");
+        exit(PROGRAM);
+    end block;
+  end func;

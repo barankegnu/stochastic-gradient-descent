@@ -1,0 +1,55 @@
+include "rational.s7i";
+
+const proc: calcAdaMax ( 
+                        ref   integer:     im,
+                        ref   pointArray2: pa,
+                        inout array float: ca
+  ) is func
+  local
+    const float:       a  is 0.002;
+    const float:       b1 is 0.900;
+    const float:       b2 is 0.999;
+    const integer:     tm is 1e8;
+    var   integer:     i  is integer.value;
+    var   integer:     j  is integer.value;
+    var   integer:     t  is integer.value;
+    var   integer:     jm is integer.value;
+    var   rational:    r  is rational.value;
+    var   rational:    r_ is rational.value;
+    var   float:       g  is float.value;
+    var   float:       g_ is float.value;
+    var   array float: m  is integer.value times float.value;
+    var   array float: u  is integer.value times float.value;
+    var   array float: c  is integer.value times float.value;
+  begin
+    jm             := length(pa);
+    r.denominator  := tm;
+    r_.numerator   := 1;
+    r_.denominator := 100;
+    for i range 1 to im do
+      m  &:= float.value;
+      u  &:= float.value;
+      c  &:= float.value;
+      ca &:= float.value;
+    end for;
+    for t range 1 to tm do
+      r.numerator := t;
+      if r >= r_ then
+        writeln(r_.numerator <& "%");
+        r_.numerator +:= 1;
+      end if;
+      for j range 1 to jm do
+        g_ := -pa[j].Y;
+        for i range 1 to im do
+          g_ +:= c[i] * pa[j].X ** (i - 1);
+        end for;
+        for i range 1 to im do
+          g     := g_ * pa[j].X ** (i - 1);
+          m[i]  := b1 * m[i] + (1.0 - b1) * g;
+          u[i]  := max(b2 * u[i], abs(g));
+          c[i] -:= a / (1.0 - b1 ** t) * m[i] / u[i];
+          ca[i] := b2 * ca[i] + (1.0 - b2) * c[i];
+        end for;
+      end for;
+    end for;
+  end func;
